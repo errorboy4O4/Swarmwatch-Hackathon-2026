@@ -1,7 +1,7 @@
 # SwarmWatch — what can a log monitor see in multi-agent swarms?
 
 Submission to the Apart Research **Swarm Alignment Hackathon 2026**, Track 4 (Multi-Agent Oversight and Control).
-Report: `report/SwarmWatch_report.pdf` (source `report/report_final.md`; rebuild with `python scripts/make_figures.py && python scripts/build_pdf.py`). `report/report.md` is an earlier draft. Honest summary of results: `STRATEGY.md`.
+Report: `report/SwarmWatch_report.pdf` (source `report/report_final.md`; rebuild with `python scripts/make_figures.py && python scripts/build_pdf.py`). Honest summary of results: `STRATEGY.md`.
 
 ## What this is
 Two small, placebo-controlled studies on real multi-agent logs, with simple baselines and ablations:
@@ -11,7 +11,10 @@ Two small, placebo-controlled studies on real multi-agent logs, with simple base
 Main finding (see report for numbers and caveats): the signal is real but modest, a one-feature baseline (how often an agent is @-mentioned) matches XGBoost, burst-timing features add nothing, and the signal degrades gracefully with partial visibility. It is *not* a collusion detector.
 
 ## Prior work disclosure
-All code, data processing and analysis were written during the hackathon window (Nov 4–8, 2026; recon and set-up began Nov 4, before the Nov 6 start — disclosed here). No pre-existing project code was reused. AI assistance (Claude Code) was used for coding and drafting; every number comes from a logged run in `logs/`.
+The hackathon judges only work done during the sprint (Nov 6-8, 2026). **Everything in this repository up to the first push was done on Nov 4-5, 2026, before the sprint started**: recon, dataset access, all code, all experiments, the red-team review, and the first draft of the report (git commit dates show this). No code from earlier projects was reused. AI assistance (Claude Code) was used for coding and drafting; every reported number comes from a logged run in `logs/`.
+
+### Sprint-window changes (Nov 6-8)
+None yet. Anything added from Nov 6 onward will be listed here with commit hashes.
 
 ## Data (NOT included in this repo)
 - Swarm Traces: public. `python scripts/download_swarmtraces.py`

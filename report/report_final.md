@@ -6,7 +6,7 @@ FOOT: Research conducted at the Swarm Alignment Hackathon, November 2026. Solo e
 
 ## Abstract
 
-If agent swarms are overseen from logs, the monitor may see only some of the messages, or may not be able to trust their content. I ask how much a log monitor can learn about which agents hold power, and whether it needs to read what the agents say. I use the AI Village swarm run: 133 copies of one model sharing one chat room, 26 of which were randomly given governance roles at the start of Phase 2. Phase-1 chat, written before any role existed, serves as a placebo. A content monitor (TF-IDF logistic regression on each agent's messages) finds the power-role agents with PR-AUC 0.712 (chance 0.195), mostly because agents announce their roles. Structure alone does much worse but not nothing: mean message length scores 0.427 and how often an agent is @-mentioned scores 0.354, while message count, out-degree and burst timing sit at chance. XGBoost on all structural features only ties the best single feature. The placebo scores at chance, though a direct Phase-2-versus-Phase-1 test is inconclusive. A secondary analysis on the Swarm Traces data (no timestamps, agents or labels) predicts a proxy actor label at macro-F1 0.726 on held-out templates, mostly from text. The data are small and the labels are assigned roles or proxies, so this is not a collusion detector.
+If agent swarms are overseen from logs, the monitor may see only some of the messages, or may not be able to trust their content. I ask how much a log monitor can learn about which agents hold power, and whether it needs to read what the agents say. I use the AI Village swarm run: 133 copies of one model sharing one chat room, 26 of which were randomly given governance roles at the start of Phase 2. Phase-1 chat, written before any role existed, serves as a placebo. A content monitor (TF-IDF logistic regression on each agent's messages) finds the power-role agents with PR-AUC 0.712 (chance 0.195), mostly because agents announce their roles. Structure alone does much worse but not nothing: mean message length scores 0.427 and how often an agent is @-mentioned scores 0.354, while message count, out-degree and burst timing sit at chance. XGBoost on all structural features (0.354) does no better than in-degree alone and falls short of mean message length (0.427). The placebo scores at chance, though a direct Phase-2-versus-Phase-1 test is inconclusive. A secondary analysis on the Swarm Traces data (no timestamps, agents or labels) predicts a proxy actor label at macro-F1 0.726 on held-out templates, mostly from text. The data are small and the labels are assigned roles or proxies, so this is not a collusion detector.
 
 ## 1. Introduction
 
@@ -94,6 +94,10 @@ The scale is small and the labels are assigned roles, so these results show what
 
 - Code repository: https://github.com/errorboy4O4/Swarmwatch-Hackathon-2026 (code, tests, logged outputs in `logs/`, scripts that reproduce every number).
 - Data: AI Village is gated (https://huggingface.co/datasets/aidigestorg/ai-village; request access under its research terms). Swarm Traces is public (https://swarmtraces.org). Neither dataset is redistributed in the repository. No exploit content is released.
+
+## Prior Work Disclosure
+
+The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Anything added on or after 6 November is listed with commit dates under "Sprint-window changes" in the repository README; as of this version of the report, nothing has been added.
 
 ## Author Contributions
 
