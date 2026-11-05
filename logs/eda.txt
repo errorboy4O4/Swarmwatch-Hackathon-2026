@@ -1,0 +1,19 @@
+rows 189579 {'payload': 91037, 'recovered_text': 75534, 'response': 23008}
+id unique True cite unique True
+with parent 61125 parent exists in data 61125
+child kind (rows) x parent kind (cols)
+ col_0           payload  recovered_text
+row_0                                  
+recovered_text    42707               1
+response          18417               0
+children per parent: n parents 26248 max 858 median 1.0 p99 12.0
+depth dist [(1, 128454), (2, 61125)]
+distinct templates 60973 top10 sizes [7128, 6398, 3624, 3296, 2718, 2674, 2674, 2574, 2425, 2387]
+rows in templates of size>=10: 110797 singletons 49378
+payload len median 159.0 templates 36700
+response len median 83.0 templates 7260
+recovered_text len median 72.0 templates 23343
+distinct redaction tokens 66052 top [('[REDACTED:destination:000003]', 13886), ('[REDACTED:opaque_marker_tail:000008]', 7165), ('[REDACTED:opaque_marker_tail:000015]', 6011), ('[REDACTED:destination:000002]', 5666), ('[REDACTED:runtime_identifier:000001]', 4735), ('[REDACTED:runtime_identifier:000003]', 3721), ('[REDACTED:opaque_marker_tail:000004]', 3058), ('[REDACTED:destination:000058]', 2908)]
+tokens appearing in >=2 rows 25963
+redaction type counts [('destination', 28086), ('opaque_fragment', 20339), ('source_identifier', 9225), ('opaque_marker_tail', 1498), ('jwt_claim_time', 1387), ('opaque_encoded_blob', 1381), ('source_path', 1311), ('query_value', 1278), ('secret_key', 372), ('network_address', 337)]
+tagged rows 37

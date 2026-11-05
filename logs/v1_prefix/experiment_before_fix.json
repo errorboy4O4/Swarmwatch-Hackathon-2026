@@ -1,0 +1,333 @@
+{
+ "n_rows": 22631,
+ "n_classes": 30,
+ "top_k": 30,
+ "results": {
+  "template_seed0": {
+   "majority": {
+    "acc": 0.255,
+    "macro_f1": 0.0135
+   },
+   "template_lookup": {
+    "acc": 0.255,
+    "macro_f1": 0.0135
+   },
+   "entity_lookup": {
+    "acc": 0.651,
+    "macro_f1": 0.6123
+   },
+   "full_model": {
+    "acc": 0.917,
+    "macro_f1": 0.8177
+   },
+   "minus_text": {
+    "acc": 0.8057,
+    "macro_f1": 0.6733
+   },
+   "minus_entities": {
+    "acc": 0.9058,
+    "macro_f1": 0.7942
+   },
+   "minus_graph": {
+    "acc": 0.9163,
+    "macro_f1": 0.8222
+   },
+   "minus_struct": {
+    "acc": 0.915,
+    "macro_f1": 0.8105
+   },
+   "only_text": {
+    "acc": 0.91,
+    "macro_f1": 0.8087
+   },
+   "only_entities": {
+    "acc": 0.7835,
+    "macro_f1": 0.6232
+   },
+   "only_graph": {
+    "acc": 0.3396,
+    "macro_f1": 0.1765
+   },
+   "only_struct": {
+    "acc": 0.3414,
+    "macro_f1": 0.0654
+   }
+  },
+  "template_seed1": {
+   "majority": {
+    "acc": 0.2512,
+    "macro_f1": 0.0134
+   },
+   "template_lookup": {
+    "acc": 0.2512,
+    "macro_f1": 0.0134
+   },
+   "entity_lookup": {
+    "acc": 0.6722,
+    "macro_f1": 0.6128
+   },
+   "full_model": {
+    "acc": 0.9155,
+    "macro_f1": 0.8158
+   },
+   "minus_text": {
+    "acc": 0.8011,
+    "macro_f1": 0.65
+   },
+   "minus_entities": {
+    "acc": 0.9077,
+    "macro_f1": 0.7952
+   },
+   "minus_graph": {
+    "acc": 0.9164,
+    "macro_f1": 0.8229
+   },
+   "minus_struct": {
+    "acc": 0.9151,
+    "macro_f1": 0.8148
+   },
+   "only_text": {
+    "acc": 0.9084,
+    "macro_f1": 0.7987
+   },
+   "only_entities": {
+    "acc": 0.7877,
+    "macro_f1": 0.6407
+   },
+   "only_graph": {
+    "acc": 0.3444,
+    "macro_f1": 0.1753
+   },
+   "only_struct": {
+    "acc": 0.3477,
+    "macro_f1": 0.0551
+   }
+  },
+  "template_seed2": {
+   "majority": {
+    "acc": 0.218,
+    "macro_f1": 0.0119
+   },
+   "template_lookup": {
+    "acc": 0.218,
+    "macro_f1": 0.0119
+   },
+   "entity_lookup": {
+    "acc": 0.6379,
+    "macro_f1": 0.5988
+   },
+   "full_model": {
+    "acc": 0.9102,
+    "macro_f1": 0.8191
+   },
+   "minus_text": {
+    "acc": 0.7967,
+    "macro_f1": 0.6752
+   },
+   "minus_entities": {
+    "acc": 0.9043,
+    "macro_f1": 0.8088
+   },
+   "minus_graph": {
+    "acc": 0.9102,
+    "macro_f1": 0.8206
+   },
+   "minus_struct": {
+    "acc": 0.9091,
+    "macro_f1": 0.8144
+   },
+   "only_text": {
+    "acc": 0.9048,
+    "macro_f1": 0.805
+   },
+   "only_entities": {
+    "acc": 0.7741,
+    "macro_f1": 0.6435
+   },
+   "only_graph": {
+    "acc": 0.3193,
+    "macro_f1": 0.1648
+   },
+   "only_struct": {
+    "acc": 0.3279,
+    "macro_f1": 0.0511
+   }
+  },
+  "random_seed0": {
+   "majority": {
+    "acc": 0.244,
+    "macro_f1": 0.0131
+   },
+   "template_lookup": {
+    "acc": 0.5073,
+    "macro_f1": 0.4449
+   },
+   "entity_lookup": {
+    "acc": 0.6954,
+    "macro_f1": 0.6395
+   },
+   "full_model": {
+    "acc": 0.926,
+    "macro_f1": 0.8588
+   },
+   "minus_text": {
+    "acc": 0.8275,
+    "macro_f1": 0.7067
+   },
+   "minus_entities": {
+    "acc": 0.9221,
+    "macro_f1": 0.8471
+   },
+   "minus_graph": {
+    "acc": 0.9273,
+    "macro_f1": 0.859
+   },
+   "minus_struct": {
+    "acc": 0.9273,
+    "macro_f1": 0.854
+   },
+   "only_text": {
+    "acc": 0.9245,
+    "macro_f1": 0.8419
+   },
+   "only_entities": {
+    "acc": 0.8068,
+    "macro_f1": 0.6848
+   },
+   "only_graph": {
+    "acc": 0.3559,
+    "macro_f1": 0.217
+   },
+   "only_struct": {
+    "acc": 0.3425,
+    "macro_f1": 0.0628
+   }
+  },
+  "random_seed1": {
+   "majority": {
+    "acc": 0.2364,
+    "macro_f1": 0.0127
+   },
+   "template_lookup": {
+    "acc": 0.4968,
+    "macro_f1": 0.4478
+   },
+   "entity_lookup": {
+    "acc": 0.6805,
+    "macro_f1": 0.6793
+   },
+   "full_model": {
+    "acc": 0.9267,
+    "macro_f1": 0.8649
+   },
+   "minus_text": {
+    "acc": 0.8272,
+    "macro_f1": 0.7484
+   },
+   "minus_entities": {
+    "acc": 0.9198,
+    "macro_f1": 0.8582
+   },
+   "minus_graph": {
+    "acc": 0.9278,
+    "macro_f1": 0.8705
+   },
+   "minus_struct": {
+    "acc": 0.9258,
+    "macro_f1": 0.8659
+   },
+   "only_text": {
+    "acc": 0.9202,
+    "macro_f1": 0.8603
+   },
+   "only_entities": {
+    "acc": 0.8023,
+    "macro_f1": 0.7178
+   },
+   "only_graph": {
+    "acc": 0.3479,
+    "macro_f1": 0.2507
+   },
+   "only_struct": {
+    "acc": 0.3512,
+    "macro_f1": 0.0669
+   }
+  },
+  "random_seed2": {
+   "majority": {
+    "acc": 0.2313,
+    "macro_f1": 0.0125
+   },
+   "template_lookup": {
+    "acc": 0.4916,
+    "macro_f1": 0.4377
+   },
+   "entity_lookup": {
+    "acc": 0.6729,
+    "macro_f1": 0.6419
+   },
+   "full_model": {
+    "acc": 0.924,
+    "macro_f1": 0.8529
+   },
+   "minus_text": {
+    "acc": 0.8137,
+    "macro_f1": 0.7001
+   },
+   "minus_entities": {
+    "acc": 0.9126,
+    "macro_f1": 0.8382
+   },
+   "minus_graph": {
+    "acc": 0.9231,
+    "macro_f1": 0.8501
+   },
+   "minus_struct": {
+    "acc": 0.9225,
+    "macro_f1": 0.8493
+   },
+   "only_text": {
+    "acc": 0.9126,
+    "macro_f1": 0.8403
+   },
+   "only_entities": {
+    "acc": 0.7927,
+    "macro_f1": 0.6756
+   },
+   "only_graph": {
+    "acc": 0.3461,
+    "macro_f1": 0.2194
+   },
+   "only_struct": {
+    "acc": 0.3354,
+    "macro_f1": 0.0669
+   }
+  }
+ },
+ "partial_visibility": {
+  "0.01": {
+   "acc": 0.6723,
+   "macro_f1": 0.2083
+  },
+  "0.05": {
+   "acc": 0.7636,
+   "macro_f1": 0.4579
+  },
+  "0.1": {
+   "acc": 0.8105,
+   "macro_f1": 0.5564
+  },
+  "0.25": {
+   "acc": 0.865,
+   "macro_f1": 0.6653
+  },
+  "0.5": {
+   "acc": 0.8923,
+   "macro_f1": 0.7366
+  },
+  "1.0": {
+   "acc": 0.917,
+   "macro_f1": 0.8177
+  }
+ }
+}

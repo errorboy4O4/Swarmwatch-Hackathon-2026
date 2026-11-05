@@ -1,0 +1,99 @@
+{
+ "n_agents": 133,
+ "n_pos": 26,
+ "prevalence": 0.19548872180451127,
+ "n_msgs": {
+  "phase1": 1307,
+  "phase2": 2541
+ },
+ "results": {
+  "phase1/full/xgb": {
+   "pr_auc": 0.2274046369052738,
+   "pr_auc_sd": 0.02885932313170531,
+   "roc_auc": 0.4404025880661395
+  },
+  "phase1/full/baseline_n_msgs": {
+   "pr_auc": 0.2226700044180843,
+   "roc_auc": 0.48274622573688003
+  },
+  "phase1/full/baseline_in_deg": {
+   "pr_auc": 0.23299911090190267,
+   "roc_auc": 0.4820273184759167
+  },
+  "phase1/full/baseline_pagerank": {
+   "pr_auc": 0.25703216017832675,
+   "roc_auc": 0.4872393961179008
+  },
+  "phase2/full/xgb": {
+   "pr_auc": 0.3544332253435453,
+   "pr_auc_sd": 0.015654544134160234,
+   "roc_auc": 0.6536304816678647
+  },
+  "phase2/full/baseline_n_msgs": {
+   "pr_auc": 0.19470264520893224,
+   "roc_auc": 0.4651329978432782
+  },
+  "phase2/full/baseline_in_deg": {
+   "pr_auc": 0.35353040523872614,
+   "roc_auc": 0.6414450035945364
+  },
+  "phase2/full/baseline_pagerank": {
+   "pr_auc": 0.3097950951882841,
+   "roc_auc": 0.6207764198418404
+  },
+  "phase2/minus_volume/xgb": {
+   "pr_auc": 0.23640532412864518,
+   "pr_auc_sd": 0.0171604565336287,
+   "roc_auc": 0.47354421279654924
+  },
+  "phase2/only_volume/xgb": {
+   "pr_auc": 0.3934060789858549,
+   "pr_auc_sd": 0.043894956112021086,
+   "roc_auc": 0.6858734723220705
+  },
+  "phase2/minus_graph/xgb": {
+   "pr_auc": 0.3203699570326132,
+   "pr_auc_sd": 0.03654818896050847,
+   "roc_auc": 0.6432422717469446
+  },
+  "phase2/only_graph/xgb": {
+   "pr_auc": 0.26947640596970235,
+   "pr_auc_sd": 0.0251044954249797,
+   "roc_auc": 0.49421279654924516
+  },
+  "phase2/minus_timing/xgb": {
+   "pr_auc": 0.38111698244461223,
+   "pr_auc_sd": 0.03072421440862455,
+   "roc_auc": 0.70215672178289
+  },
+  "phase2/only_timing/xgb": {
+   "pr_auc": 0.19164339618454182,
+   "pr_auc_sd": 0.013552781939780306,
+   "roc_auc": 0.456254493170381
+  },
+  "phase2/vis0.5/xgb": {
+   "pr_auc": 0.31192697496440325,
+   "pr_auc_sd": 0.05474430815468692,
+   "roc_auc": 0.6398274622573689,
+   "baseline_in_deg_pr_auc": 0.34186976414144193
+  },
+  "phase2/vis0.25/xgb": {
+   "pr_auc": 0.29264411584365,
+   "pr_auc_sd": 0.055499187252008524,
+   "roc_auc": 0.6090762041696621,
+   "baseline_in_deg_pr_auc": 0.32940311691792895
+  },
+  "phase2/vis0.1/xgb": {
+   "pr_auc": 0.27033203074322143,
+   "pr_auc_sd": 0.042773668782888206,
+   "roc_auc": 0.5914629762760604,
+   "baseline_in_deg_pr_auc": 0.309629349129208
+  },
+  "phase2/vis0.05/xgb": {
+   "pr_auc": 0.2540540145135656,
+   "pr_auc_sd": 0.047267402784046314,
+   "roc_auc": 0.577390366642703,
+   "baseline_in_deg_pr_auc": 0.28309558195974593
+  }
+ }
+}

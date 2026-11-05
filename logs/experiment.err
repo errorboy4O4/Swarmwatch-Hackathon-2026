@@ -1,0 +1,6 @@
+template 0 {"acc": 0.8816, "macro_f1": 0.7336}
+template 1 {"acc": 0.8534, "macro_f1": 0.6877}
+template 2 {"acc": 0.8877, "macro_f1": 0.7581}
+random 0 {"acc": 0.9208, "macro_f1": 0.8561}
+random 1 {"acc": 0.9218, "macro_f1": 0.8605}
+random 2 {"acc": 0.917, "macro_f1": 0.8414}
