@@ -58,6 +58,7 @@ while i < len(lines):
         data = [[Paragraph(inline(c), CELLB if r == 0 else CELL) for c in row] for r, row in enumerate(rows)]
         ncol = len(rows[0]); W = 6.3 * inch; first = W * (0.46 if ncol == 4 else 0.52 if ncol == 3 else 0.30 if ncol >= 6 else 0.5)
         cw = [first] + [(W - first) / (ncol - 1)] * (ncol - 1)
+        if ncol == 7: cw = [W * x for x in (0.10, 0.25, 0.12, 0.12, 0.14, 0.14, 0.13)]
         t = Table(data, colWidths=cw, repeatRows=1)
         t.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#999999")), ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#eeeeee")),
                                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"), ("TOPPADDING", (0, 0), (-1, -1), 2), ("BOTTOMPADDING", (0, 0), (-1, -1), 2)]))

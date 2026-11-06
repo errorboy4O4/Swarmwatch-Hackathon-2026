@@ -17,6 +17,7 @@ The hackathon judges only work done during the sprint (Nov 6-8, 2026). **Everyth
 - **Nov 6:** `scripts/observability.py` + `logs/observability.json`: Swarm Traces attribution at four observability tiers (full log / gateway metadata only / flat log / identifier tokens only), reported as Table A2 in the report appendix. Reuses pre-sprint code and data; its full and gateway tiers reproduce the pre-sprint ablation numbers exactly (0.726 and 0.596 macro-F1).
 - **Nov 6:** `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json` (+ `tests/test_roles.py`): recovers role changes around the reassignment mistake from chat self-identification (noisy; hand audit of 20 flagged cases: 17 clear, 1 ambiguous, 2 false positives). Reported in the report's Results and Appendix B. The script also writes `logs/role_audit_sample.json` (20 verbatim AI Village message excerpts used for the hand audit); it is git-ignored and not included because the dataset's terms forbid redistribution. The audit labels are recorded by index in the script, and the sample is seeded, so it regenerates identically once you have dataset access.
 - **Nov 6:** `src/swarmwatch/evasion.py`, `scripts/evasion.py`, `logs/evasion.json` (+ `tests/test_evasion.py`): simulated evasions of the AI Village log (strip @-mentions, mask role words, clip length) and a white-box vocabulary-deletion adversary vs static and retrained content monitors. Reported in the report's Results and Appendix B (Tables B2, B3). Rewritten logs, not adapting agents.
+- **Nov 6:** `scripts/visibility.py`, `logs/visibility.json`: equal-budget comparison of random, time-block and agent-subset visibility on AI Village (Table B4 in the report). Deterministic (rerun identical).
 Anything else added from Nov 6 onward will be listed here with commit hashes.
 
 ## Data (NOT included in this repo)
@@ -39,6 +40,7 @@ python scripts/village_followup.py > logs/village_followup.json   # content base
 python scripts/observability.py > logs/observability.json      # Swarm Traces observability tiers (sprint-window)
 python scripts/role_recovery.py > logs/role_recovery.json      # role changes from chat self-identification (sprint-window)
 python scripts/evasion.py > logs/evasion.json                  # simulated evasions + white-box vocabulary adversary (sprint-window)
+python scripts/visibility.py > logs/visibility.json            # random vs targeted visibility at equal budget (sprint-window)
 ```
 Seeds are fixed in the scripts. Logged outputs from our runs are in `logs/`.
 
