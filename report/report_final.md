@@ -6,7 +6,7 @@ FOOT: Research conducted at the Swarm Alignment Hackathon, November 2026. Solo e
 
 ## Abstract
 
-If agent swarms are overseen from logs, the monitor may see only some of the messages, or may not be able to trust their content. I ask how much a log monitor can learn about which agents hold power, and whether it needs to read what the agents say. I use the AI Village swarm run: 133 copies of one model sharing one chat room, 26 of which were randomly given governance roles at the start of Phase 2. Phase-1 chat, written before any role existed, serves as a placebo. A content monitor (TF-IDF logistic regression on each agent's messages) finds the power-role agents with PR-AUC 0.712 (chance 0.195), mostly because agents announce their roles. Structure alone does much worse but not nothing: mean message length scores 0.427 and how often an agent is @-mentioned scores 0.354, while message count, out-degree and burst timing sit at chance. XGBoost on all structural features (0.354) does no better than in-degree alone and falls short of mean message length (0.427). The placebo scores at chance, though a direct Phase-2-versus-Phase-1 test is inconclusive. A secondary analysis on the Swarm Traces data (no timestamps, agents or labels) predicts a proxy actor label at macro-F1 0.726 on held-out templates, mostly from text. The data are small and the labels are assigned roles or proxies, so this is not a collusion detector.
+If agent swarms are overseen from logs, the monitor may see only some of the messages, or may not be able to trust their content. I ask how much a log monitor can learn about which agents hold power, and whether it needs to read what the agents say. I use the AI Village swarm run: 133 copies of one model sharing one chat room, 26 of which were randomly given governance roles at the start of Phase 2. Phase-1 chat, written before any role existed, serves as a placebo. A content monitor (TF-IDF logistic regression on each agent's messages) finds the power-role agents with PR-AUC 0.712 (chance 0.195), mostly because agents announce their roles. Structure alone does much worse but not nothing: mean message length scores 0.427 and how often an agent is @-mentioned scores 0.354, while message count, out-degree and burst timing sit at chance. XGBoost on all structural features (0.354) does no better than in-degree alone and falls short of mean message length (0.427). The placebo scores at chance, though a direct Phase-2-versus-Phase-1 test is inconclusive. A secondary analysis on the Swarm Traces data (no timestamps, agents or labels) predicts a proxy actor label at macro-F1 0.726 on held-out templates, mostly from text; a metadata-only view without any text keeps 0.596. The data are small and the labels are assigned roles or proxies, so this is not a collusion detector.
 
 ## 1. Introduction
 
@@ -67,11 +67,24 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 
 **Partial visibility.** Figure 2 shows the monitor degrading gracefully when it sees only a sample of messages: XGBoost scores 0.312 with 50% of messages, 0.293 with 25%, 0.270 with 10% and 0.254 with 5%, still above chance. In-degree alone does at least as well at every level. Cross-validation uses only these 133 agents, so intervals are wide (for in-degree at full visibility, 0.21 to 0.52).
 
+**Observability tiers (Swarm Traces; added during the sprint, Nov 6).** The Track 4 prompt "catch the swarm at the gateway" asks what a monitor can do from metadata alone. I ran the Swarm Traces attribution task (Appendix A) at four levels of what the monitor may see, always with the credential id masked. Table 2 shows the result. Observation: removing the message text costs about 0.13 macro-F1 (0.726 to 0.596). Observation: removing the parent/child links and then the row structure changes the score by 0.008 and 0.006, which is well inside the seed-to-seed standard deviation (0.02 to 0.03). A simple infrastructure-token lookup already reaches 0.548. Interpretation: on this data the text carries the extra signal, and the metadata tiers are barely distinguishable from each other. Caveat: the "gateway" tokens are pseudonym ids that the dataset's redaction extracted from payload text, so this is a metadata-like view, not a real network-egress log, and the task remains a proxy-label attribution rather than detection of coordinated exfiltration.
+
+Table 2. Swarm Traces attribution by observability tier (held-out templates, mean of three seeds; random-row split in the last column).
+
+| What the monitor sees | Accuracy | Macro-F1 | Macro-F1 (random split) |
+|---|---|---|---|
+| Majority class (no information) | 0.189 | 0.011 | 0.013 |
+| Infrastructure-token lookup | 0.571 | 0.548 | 0.654 |
+| Full log: text + metadata + links | 0.874 | 0.726 | 0.853 |
+| Gateway: metadata + links, no text | 0.755 | 0.596 | 0.718 |
+| Flat log: metadata, no links | 0.735 | 0.588 | 0.705 |
+| Identifier tokens only | 0.728 | 0.582 | 0.693 |
+
 ![Figure 2. How the structural monitor degrades when it sees only a random sample of Phase-2 messages. Both XGBoost and in-degree alone stay above chance down to 5% of messages.](report/figs/fig2_visibility.png)
 
 ## 5. Discussion and Limitations
 
-**What this means for oversight.** If a swarm's messages can be read, the cheapest effective way to find who holds power is to read them. If content is withheld or unreliable, structure still leaks a modest amount, and it survives partial visibility. For monitor designers the practical lesson is to start with simple baselines: on data like this a single feature matched a boosted model.
+**What this means for oversight.** If a swarm's messages can be read, the cheapest effective way to find who holds power is to read them. If content is withheld or unreliable, structure still leaks a modest amount, and it survives partial visibility. For monitor designers the practical lesson is to start with simple baselines: on data like this a single feature matched a boosted model. On Swarm Traces a monitor without any text kept most of the attribution signal (macro-F1 0.596 against 0.726 with text, Table 2), but that is attribution to a proxy label, not detection of coordination.
 
 **Limitations.**
 
@@ -81,6 +94,8 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 - I ran several comparisons. I report all baselines in both phases and apply a Holm correction only to the five single-feature tests in each phase.
 - The reassignment mistake described in the dataset README could not be tested as a labelled experiment, because the reassigned roles are not in the tables I downloaded.
 - The monitors are easy to evade: an agent that avoids mentions or paraphrases defeats them. I did not test adversaries, log tampering, steganography or trusted-monitor protocols, which are central to Track 4.
+
+- The Swarm Traces "gateway" tier is not a true network-egress log: its tokens come from the dataset's redaction of payload text, and the label is a proxy.
 
 **Future work.** Recover the reassigned roles from the computer-use turns or the simulation's git history and run the reassignment as a proper natural experiment; test targeted rather than random visibility and explicit evasion; replicate on another village or model; test a monitor that sees content but not agent names.
 
@@ -97,7 +112,7 @@ The scale is small and the labels are assigned roles, so these results show what
 
 ## Prior Work Disclosure
 
-The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Anything added on or after 6 November is listed with commit dates under "Sprint-window changes" in the repository README; as of this version of the report, nothing has been added.
+The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. The only addition made during the sprint window so far is the observability-tier experiment on Swarm Traces (Table 2; `scripts/observability.py`, `logs/observability.json`, run on 6 November 2026); it reuses the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
 
 ## Author Contributions
 

@@ -92,3 +92,8 @@ Numbers: all report numbers matched logs. Hostile scores: Impact 2, Execution 2-
 - FIXED: "partial visibility" on Swarm Traces renamed training-data fraction; Swarm Traces demoted to secondary; permutation count stated correctly (reassign check uses 3,000 — now documented in script only; report says 5,000 for single-feature tests).
 - FIXED: citations checked against abstracts (Greenblatt = arXiv 2023/ICML 2024; Motwani full title; Rose = HELIOS/NARCBench). METR PDF unreadable -> incident attributed to sprint page.
 - OPEN: placeholders [YOUR NAME]/[AFFILIATION]/[GITHUB URL]; PDF on official template; fresh-venv reproduction; reassignment window uses 3,000 perms (report 4.1 says 5,000 for single-feature tests only - fine); Track-4 relevance remains thin (no adversarial/targeted visibility).
+
+---
+## SPRINT WINDOW — 2026-11-06
+Dossier (pre-sprint-dossier.md, by the user's other tool) used for ideas only; its unverified facts (7,905 names, ~7% spoofing, 70,000 messages) were NOT put in the report. Its suggested "gateway monitor" experiment was run as an observability-tier curve on Swarm Traces (scripts/observability.py, logs/observability.json): full 0.726 -> gateway(no text) 0.596 -> flat log 0.588 -> tokens only 0.582 macro-F1 (held-out templates); infra-token lookup 0.548; majority 0.011. Full/gateway tiers reproduce the pre-sprint minus_text ablation exactly. Metadata tiers are within seed noise of each other (sd 0.02-0.03). Caveats in report: tokens derive from payload text; proxy label; not detection of exfiltration.
+Skipped on purpose: dossier's synthetic-injection variant (planted group detection reduces to a count threshold on real token reuse; circular). Report/README disclosure updated: only this experiment is sprint-window work.

@@ -14,7 +14,8 @@ Main finding (see report for numbers and caveats): the signal is real but modest
 The hackathon judges only work done during the sprint (Nov 6-8, 2026). **Everything in this repository up to the first push was done on Nov 4-5, 2026, before the sprint started**: recon, dataset access, all code, all experiments, the red-team review, and the first draft of the report (git commit dates show this). No code from earlier projects was reused. AI assistance (Claude Code) was used for coding and drafting; every reported number comes from a logged run in `logs/`.
 
 ### Sprint-window changes (Nov 6-8)
-None yet. Anything added from Nov 6 onward will be listed here with commit hashes.
+- **Nov 6:** `scripts/observability.py` + `logs/observability.json`: Swarm Traces attribution at four observability tiers (full log / gateway metadata only / flat log / identifier tokens only), reported as Table 2 in the report. Reuses pre-sprint code and data; its full and gateway tiers reproduce the pre-sprint ablation numbers exactly (0.726 and 0.596 macro-F1).
+Anything else added from Nov 6 onward will be listed here with commit hashes.
 
 ## Data (NOT included in this repo)
 - Swarm Traces: public. `python scripts/download_swarmtraces.py`
@@ -33,6 +34,7 @@ python scripts/run_village.py    > logs/village.json           # AI Village
 python scripts/perm_test.py      > logs/perm.json
 python scripts/reassign_check.py > logs/reassign.json
 python scripts/village_followup.py > logs/village_followup.json   # content baselines, placebo diff, Holm
+python scripts/observability.py > logs/observability.json      # Swarm Traces observability tiers (sprint-window)
 ```
 Seeds are fixed in the scripts. Logged outputs from our runs are in `logs/`.
 
