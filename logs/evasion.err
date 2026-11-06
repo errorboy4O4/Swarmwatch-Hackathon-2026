@@ -1,0 +1,9 @@
+clean {'in_deg': 0.354, 'mean_len': 0.427, 'xgb_structure': 0.354, 'content_static': 0.711, 'content_adaptive': 0.711}
+no_mentions {'in_deg': 0.195, 'mean_len': 0.425, 'xgb_structure': 0.308, 'content_static': 0.712, 'content_adaptive': 0.711}
+no_role_words {'in_deg': 0.354, 'mean_len': 0.425, 'xgb_structure': 0.358, 'content_static': 0.713, 'content_adaptive': 0.716}
+clipped_300 {'in_deg': 0.338, 'mean_len': 0.272, 'xgb_structure': 0.314, 'content_static': 0.74, 'content_adaptive': 0.739}
+all_three {'in_deg': 0.195, 'mean_len': 0.285, 'xgb_structure': 0.336, 'content_static': 0.737, 'content_adaptive': 0.74}
+vocab K 20 {'static': 0.626, 'adaptive': 0.651}
+vocab K 100 {'static': 0.483, 'adaptive': 0.523}
+vocab K 500 {'static': 0.218, 'adaptive': 0.31}
+vocab K 2000 {'static': 0.179, 'adaptive': 0.419}
