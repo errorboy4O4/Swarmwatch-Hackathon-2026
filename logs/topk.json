@@ -1,0 +1,67 @@
+{
+ "n_agents": 133,
+ "n_positive": 26,
+ "prevalence": 0.19548872180451127,
+ "ks": [
+  10,
+  20,
+  26,
+  40
+ ],
+ "results": {
+  "content_tfidf_logreg": {
+   "10": {
+    "precision": 0.8,
+    "expected_positives": 8.0
+   },
+   "20": {
+    "precision": 0.71,
+    "expected_positives": 14.2
+   },
+   "26": {
+    "precision": 0.6307692307692307,
+    "expected_positives": 16.4
+   },
+   "40": {
+    "precision": 0.495,
+    "expected_positives": 19.8
+   }
+  },
+  "mean_len": {
+   "10": {
+    "precision": 0.6,
+    "expected_positives": 6.0
+   },
+   "20": {
+    "precision": 0.55,
+    "expected_positives": 11.0
+   },
+   "26": {
+    "precision": 0.46153846153846156,
+    "expected_positives": 12.0
+   },
+   "40": {
+    "precision": 0.375,
+    "expected_positives": 15.0
+   }
+  },
+  "in_deg": {
+   "10": {
+    "precision": 0.4,
+    "expected_positives": 4.0
+   },
+   "20": {
+    "precision": 0.25,
+    "expected_positives": 5.0
+   },
+   "26": {
+    "precision": 0.2692307692307692,
+    "expected_positives": 7.0
+   },
+   "40": {
+    "precision": 0.275,
+    "expected_positives": 11.0
+   }
+  }
+ }
+}

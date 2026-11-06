@@ -19,6 +19,7 @@ The hackathon judges only work done during the sprint (Nov 6-8, 2026). **Everyth
 - **Nov 6:** `src/swarmwatch/evasion.py`, `scripts/evasion.py`, `logs/evasion.json` (+ `tests/test_evasion.py`): simulated evasions of the AI Village log (strip @-mentions, mask role words, clip length) and a white-box vocabulary-deletion adversary vs static and retrained content monitors. Reported in the report's Results and Appendix B (Tables B2, B3). Rewritten logs, not adapting agents.
 - **Nov 6:** `scripts/visibility.py`, `logs/visibility.json`: equal-budget comparison of random, time-block and agent-subset visibility on AI Village (Table B4 in the report). Deterministic (rerun identical).
 - **Nov 6:** `scripts/ci.py`, `logs/ci.json`: bootstrap 95% intervals for the headline numbers (Table 1); `tests/test_integration.py`: end-to-end smoke test on a synthetic fixture.
+- **Nov 6:** `scripts/topk.py`, `logs/topk.json`: precision at k for the content, length and in-degree monitors (Table B5 in the report).
 Anything else added from Nov 6 onward will be listed here with commit hashes.
 
 ## Data (NOT included in this repo)
@@ -43,6 +44,7 @@ python scripts/role_recovery.py > logs/role_recovery.json      # role changes fr
 python scripts/evasion.py > logs/evasion.json                  # simulated evasions + white-box vocabulary adversary (sprint-window)
 python scripts/visibility.py > logs/visibility.json            # random vs targeted visibility at equal budget (sprint-window)
 python scripts/ci.py > logs/ci.json                            # bootstrap 95% CIs for headline numbers (sprint-window)
+python scripts/topk.py > logs/topk.json                        # precision@k of the monitors (sprint-window)
 ```
 Seeds are fixed in the scripts. Logged outputs from our runs are in `logs/`.
 
