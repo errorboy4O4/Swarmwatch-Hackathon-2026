@@ -6,3 +6,4 @@ data/
 *.tar
 .env
 report/Copy of Apart*
+logs/role_audit_sample.json

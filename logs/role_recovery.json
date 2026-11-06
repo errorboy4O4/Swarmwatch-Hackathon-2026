@@ -1,0 +1,45 @@
+{
+ "msgs_total_phase2": 2541,
+ "msg_level": {
+  "mistake": {
+   "n_title_msgs": 234,
+   "frac_original": 0.5042735042735043
+  },
+  "post": {
+   "n_title_msgs": 46,
+   "frac_original": 0.45652173913043476
+  },
+  "pre": {
+   "n_title_msgs": 272,
+   "frac_original": 0.9779411764705882
+  }
+ },
+ "agent_level_mistake_window": {
+  "no_self_title": 42,
+  "original_only": 37,
+  "other_only": 31,
+  "both": 23
+ },
+ "precision_audit": {
+  "flagged_pairs_in_window": 55,
+  "sample_n": 20,
+  "clear": 17,
+  "ambiguous": 1,
+  "false_positive": 2
+ },
+ "changed_agents": 31,
+ "flipped_power_status": 6,
+ "flip_direction": {
+  "power_to_nonpower": 2,
+  "nonpower_to_power": 4
+ },
+ "monitor_trained_pre_scored_during": {
+  "n_original_only_agents": 37,
+  "auc_vs_original_label_original_only_agents": 0.9714285714285714,
+  "n_flipped": 6,
+  "mean_score_flipped_power_to_nonpower": 0.1528335598327831,
+  "mean_score_flipped_nonpower_to_power": 0.30567325672254914,
+  "mean_score_original_only_power": 0.3111051240745275,
+  "mean_score_original_only_nonpower": 0.13635071043254665
+ }
+}
