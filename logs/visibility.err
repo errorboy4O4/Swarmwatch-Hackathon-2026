@@ -1,0 +1,6 @@
+0.1 random {'n_msgs_seen': 254.0, 'agents_seen': 104.8, 'in_deg': 0.31, 'mean_len': 0.242, 'content': 0.369}
+0.1 time_block {'n_msgs_seen': 254.0, 'agents_seen': 100.0, 'in_deg': 0.303, 'mean_len': 0.254, 'content': 0.368}
+0.1 agent_subset {'n_msgs_seen': 278.4, 'agents_seen': 14.2, 'in_deg': 0.371, 'mean_len': 0.252, 'content': 0.235}
+0.25 random {'n_msgs_seen': 635.0, 'agents_seen': 126.6, 'in_deg': 0.329, 'mean_len': 0.307, 'content': 0.553}
+0.25 time_block {'n_msgs_seen': 635.0, 'agents_seen': 115.4, 'in_deg': 0.317, 'mean_len': 0.295, 'content': 0.471}
+0.25 agent_subset {'n_msgs_seen': 645.8, 'agents_seen': 33.0, 'in_deg': 0.342, 'mean_len': 0.251, 'content': 0.296}
