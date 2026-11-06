@@ -14,7 +14,8 @@ Main finding (see report for numbers and caveats): the signal is real but modest
 The hackathon judges only work done during the sprint (Nov 6-8, 2026). **Everything in this repository up to the first push was done on Nov 4-5, 2026, before the sprint started**: recon, dataset access, all code, all experiments, the red-team review, and the first draft of the report (git commit dates show this). No code from earlier projects was reused. AI assistance (Claude Code) was used for coding and drafting; every reported number comes from a logged run in `logs/`.
 
 ### Sprint-window changes (Nov 6-8)
-- **Nov 6:** `scripts/observability.py` + `logs/observability.json`: Swarm Traces attribution at four observability tiers (full log / gateway metadata only / flat log / identifier tokens only), reported as Table 2 in the report. Reuses pre-sprint code and data; its full and gateway tiers reproduce the pre-sprint ablation numbers exactly (0.726 and 0.596 macro-F1).
+- **Nov 6:** `scripts/observability.py` + `logs/observability.json`: Swarm Traces attribution at four observability tiers (full log / gateway metadata only / flat log / identifier tokens only), reported as Table A2 in the report appendix. Reuses pre-sprint code and data; its full and gateway tiers reproduce the pre-sprint ablation numbers exactly (0.726 and 0.596 macro-F1).
+- **Nov 6:** `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json` (+ `tests/test_roles.py`): recovers role changes around the reassignment mistake from chat self-identification (noisy; hand audit of 20 flagged cases: 17 clear, 1 ambiguous, 2 false positives). Reported in the report's Results and Appendix B. The script also writes `logs/role_audit_sample.json` (20 verbatim AI Village message excerpts used for the hand audit); it is git-ignored and not included because the dataset's terms forbid redistribution. The audit labels are recorded by index in the script, and the sample is seeded, so it regenerates identically once you have dataset access.
 Anything else added from Nov 6 onward will be listed here with commit hashes.
 
 ## Data (NOT included in this repo)
@@ -35,6 +36,7 @@ python scripts/perm_test.py      > logs/perm.json
 python scripts/reassign_check.py > logs/reassign.json
 python scripts/village_followup.py > logs/village_followup.json   # content baselines, placebo diff, Holm
 python scripts/observability.py > logs/observability.json      # Swarm Traces observability tiers (sprint-window)
+python scripts/role_recovery.py > logs/role_recovery.json      # role changes from chat self-identification (sprint-window)
 ```
 Seeds are fixed in the scripts. Logged outputs from our runs are in `logs/`.
 

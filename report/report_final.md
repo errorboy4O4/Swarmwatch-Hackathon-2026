@@ -67,24 +67,15 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 
 **Partial visibility.** Figure 2 shows the monitor degrading gracefully when it sees only a sample of messages: XGBoost scores 0.312 with 50% of messages, 0.293 with 25%, 0.270 with 10% and 0.254 with 5%, still above chance. In-degree alone does at least as well at every level. Cross-validation uses only these 133 agents, so intervals are wide (for in-degree at full visibility, 0.21 to 0.52).
 
-**Observability tiers (Swarm Traces; added during the sprint, Nov 6).** The Track 4 prompt "catch the swarm at the gateway" asks what a monitor can do from metadata alone. I ran the Swarm Traces attribution task (Appendix A) at four levels of what the monitor may see, always with the credential id masked. Table 2 shows the result. Observation: removing the message text costs about 0.13 macro-F1 (0.726 to 0.596). Observation: removing the parent/child links and then the row structure changes the score by 0.008 and 0.006, which is well inside the seed-to-seed standard deviation (0.02 to 0.03). A simple infrastructure-token lookup already reaches 0.548. Interpretation: on this data the text carries the extra signal, and the metadata tiers are barely distinguishable from each other. Caveat: the "gateway" tokens are pseudonym ids that the dataset's redaction extracted from payload text, so this is a metadata-like view, not a real network-egress log, and the task remains a proxy-label attribution rather than detection of coordinated exfiltration.
+**Recovering the role reassignment from chat (added Nov 6).** The reassigned roles are not in the tables, but agents often sign a message with a role title next to their own name, so I extracted those self-identifications with a simple, noisy rule (a hand audit of 20 of 55 flagged cases found 17 clear, 1 ambiguous and 2 false positives; details in Appendix B). Before 12:50 UTC, 98% of title-bearing messages used the agent's original title; from 12:50 to 21:00 UTC only 50% did. Of the 91 agents who signed with a title in that window, 60 still used their original title at least once, consistent with the dataset README, but 31 (about a third) signed only as a different role. Only 6 of those 31 moved between power and non-power roles, so the power label is mostly unaffected.
 
-Table 2. Swarm Traces attribution by observability tier (held-out templates, mean of three seeds; random-row split in the last column).
-
-| What the monitor sees | Accuracy | Macro-F1 | Macro-F1 (random split) |
-|---|---|---|---|
-| Majority class (no information) | 0.189 | 0.011 | 0.013 |
-| Infrastructure-token lookup | 0.571 | 0.548 | 0.654 |
-| Full log: text + metadata + links | 0.874 | 0.726 | 0.853 |
-| Gateway: metadata + links, no text | 0.755 | 0.596 | 0.718 |
-| Flat log: metadata, no links | 0.735 | 0.588 | 0.705 |
-| Identifier tokens only | 0.728 | 0.582 | 0.693 |
+**Observability tiers (Swarm Traces; added Nov 6).** For the Track 4 "catch the swarm at the gateway" prompt, I ran the Appendix A attribution task at four levels of visibility, always with the credential id masked (Table A2). Removing the text costs about 0.13 macro-F1 (0.726 to 0.596). Removing the parent/child links, then the row structure, changes the score by only 0.008 and 0.006, inside the seed-to-seed noise (standard deviation 0.02 to 0.03). On this data the text carries the extra signal. Caveat: the "gateway" tokens are pseudonyms extracted from payload text, so this is a metadata-like view, not a real egress log, and the task is still proxy-label attribution, not detection of exfiltration.
 
 ![Figure 2. How the structural monitor degrades when it sees only a random sample of Phase-2 messages. Both XGBoost and in-degree alone stay above chance down to 5% of messages.](report/figs/fig2_visibility.png)
 
 ## 5. Discussion and Limitations
 
-**What this means for oversight.** If a swarm's messages can be read, the cheapest effective way to find who holds power is to read them. If content is withheld or unreliable, structure still leaks a modest amount, and it survives partial visibility. For monitor designers the practical lesson is to start with simple baselines: on data like this a single feature matched a boosted model. On Swarm Traces a monitor without any text kept most of the attribution signal (macro-F1 0.596 against 0.726 with text, Table 2), but that is attribution to a proxy label, not detection of coordination.
+**What this means for oversight.** If a swarm's messages can be read, the cheapest effective way to find who holds power is to read them. If content is withheld or unreliable, structure still leaks a modest amount, and it survives partial visibility. For monitor designers the practical lesson is to start with simple baselines: on data like this a single feature matched a boosted model. On Swarm Traces a monitor without any text kept most of the attribution signal (macro-F1 0.596 against 0.726 with text, Table A2), but that is attribution to a proxy label, not detection of coordination.
 
 **Limitations.**
 
@@ -92,12 +83,12 @@ Table 2. Swarm Traces attribution by observability tier (held-out templates, mea
 - Roles were assigned randomly, so I measure the effect of an assigned role, not emergent influence or collusion. If roles had been earned through behaviour, the interpretation would differ.
 - The label boundary is a judgement. The placebo is consistent but not conclusive (above).
 - I ran several comparisons. I report all baselines in both phases and apply a Holm correction only to the five single-feature tests in each phase.
-- The reassignment mistake described in the dataset README could not be tested as a labelled experiment, because the reassigned roles are not in the tables I downloaded.
+- The reassigned roles are not in the tables I downloaded. The chat-based recovery above is a noisy proxy that covers only agents who sign with a title (91 of 133 in the mistake window) and cannot establish their true reassigned roles.
 - The monitors are easy to evade: an agent that avoids mentions or paraphrases defeats them. I did not test adversaries, log tampering, steganography or trusted-monitor protocols, which are central to Track 4.
 
 - The Swarm Traces "gateway" tier is not a true network-egress log: its tokens come from the dataset's redaction of payload text, and the label is a proxy.
 
-**Future work.** Recover the reassigned roles from the computer-use turns or the simulation's git history and run the reassignment as a proper natural experiment; test targeted rather than random visibility and explicit evasion; replicate on another village or model; test a monitor that sees content but not agent names.
+**Future work.** Recover the true reassigned roles from the computer-use turns or the simulation's git history to replace the chat-based proxy and run the reassignment as a proper natural experiment; test targeted rather than random visibility and explicit evasion; replicate on another village or model; test a monitor that sees content but not agent names.
 
 ## 6. Conclusion
 
@@ -112,7 +103,7 @@ The scale is small and the labels are assigned roles, so these results show what
 
 ## Prior Work Disclosure
 
-The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. The only addition made during the sprint window so far is the observability-tier experiment on Swarm Traces (Table 2; `scripts/observability.py`, `logs/observability.json`, run on 6 November 2026); it reuses the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
+The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Two additions were made during the sprint window (6 November 2026): the observability-tier experiment on Swarm Traces (Table A2; `scripts/observability.py`, `logs/observability.json`) and the role-recovery analysis on AI Village (the paragraph "Recovering the role reassignment from chat"; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json`). Both reuse the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
 
 ## Author Contributions
 
@@ -153,6 +144,19 @@ Table A1. Held-out templates, mean of three seeds.
 
 Text carries most of the signal; the parent/child graph and structure add nothing measurable. Training on 1%, 10%, 25% and 100% of the training rows (seed 0) gives macro-F1 0.213, 0.450, 0.617 and 0.734. That is a learning curve, not a visibility test, because the test rows keep full context. Limits: the label is a proxy, so this shows credentials are predictable from content, not that coordination was detected; the template holdout still lets similar rows cross the split (random-row splits are 0.127 macro-F1 easier).
 
+Observability tiers (added Nov 6; the Track 4 "gateway" prompt). The same task with less of the log visible. Entity tokens are pseudonym ids extracted from payload text by the dataset's redaction.
+
+Table A2. Swarm Traces attribution by observability tier (held-out templates, mean of three seeds; random-row split in the last column).
+
+| What the monitor sees | Accuracy | Macro-F1 | Macro-F1 (random split) |
+|---|---|---|---|
+| Majority class (no information) | 0.189 | 0.011 | 0.013 |
+| Infrastructure-token lookup | 0.571 | 0.548 | 0.654 |
+| Full log: text + metadata + links | 0.874 | 0.726 | 0.853 |
+| Gateway: metadata + links, no text | 0.755 | 0.596 | 0.718 |
+| Flat log: metadata, no links | 0.735 | 0.588 | 0.705 |
+| Identifier tokens only | 0.728 | 0.582 | 0.693 |
+
 ## Appendix B. Additional AI Village results
 
 Table B1. Ablations (XGBoost, Phase 2, PR-AUC / ROC-AUC).
@@ -171,7 +175,9 @@ The graph-only model scores at chance in ROC-AUC although in-degree alone reache
 
 Label sensitivity. Also counting judges, captains, the admiral, fire chief and harbor master as power roles gives 33 positives (prevalence 0.248); in-degree PR-AUC is 0.400 (permutation p = 0.005).
 
-Reassignment window. The dataset README says an operator mistake reassigned roles around 5:50am PT (12:50 UTC on the dataset clock, an assumption I did not verify) and that the originals were restored around 2pm PT. Scoring against the original roles, in-degree PR-AUC is 0.353 before 12:50 UTC (602 messages, p = 0.004) and 0.328 from 12:50 UTC onward (1,939 messages, p = 0.019); message count is at chance in both. This cannot be told apart from hub structure simply persisting, so I draw no conclusion about agents keeping old roles.
+Reassignment window (structure only; see Section 4 for the chat-based recovery). The dataset README says an operator mistake reassigned roles around 5:50am PT (12:50 UTC on the dataset clock, an assumption I did not verify) and that the originals were restored around 2pm PT. Scoring against the original roles, in-degree PR-AUC is 0.353 before 12:50 UTC (602 messages, p = 0.004) and 0.328 from 12:50 UTC onward (1,939 messages, p = 0.019); message count is at chance in both. This cannot be told apart from hub structure simply persisting, so I draw no conclusion about agents keeping old roles.
+
+Role recovery from chat (added Nov 6; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`). A role title counts as a self-identification when it appears within a small window around the speaker's own name in the first 260 characters of a message (the single `god` role is excluded because it matches too many ordinary words, and titles shared by several roles are skipped). Title-bearing messages: 272 before 12:50 UTC (97.8% original title), 234 from 12:50 to 21:00 UTC (50.4%), 46 after 21:00 UTC (45.7%; small sample, and the UTC timing of the restoration is an assumption). Agents in the mistake window: 37 original title only, 31 other title only, 23 both, 42 no title. Hand audit of a random sample of 20 of the 55 flagged (agent, title) pairs: 17 clear self-identifications as a different role, 1 ambiguous (agent lists old and new role), 2 false positives (the title belonged to another agent), so roughly 85% of flagged cases were clearly right in this sample. Of the 31 other-only agents, 6 changed between power and non-power roles (4 gained, 2 lost). A content monitor trained on pre-mistake text scores the four who gained a power role at a mean of 0.31 and the two who lost one at 0.15, but their new roles were inferred from the same text the monitor reads, so this is circular and rests on six agents. The rule only sees agents who sign with a title, so it cannot establish the true reassigned roles.
 
 ## Appendix C. Limitations and Dual-Use / Ethical Considerations
 
