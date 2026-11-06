@@ -18,6 +18,7 @@ The hackathon judges only work done during the sprint (Nov 6-8, 2026). **Everyth
 - **Nov 6:** `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json` (+ `tests/test_roles.py`): recovers role changes around the reassignment mistake from chat self-identification (noisy; hand audit of 20 flagged cases: 17 clear, 1 ambiguous, 2 false positives). Reported in the report's Results and Appendix B. The script also writes `logs/role_audit_sample.json` (20 verbatim AI Village message excerpts used for the hand audit); it is git-ignored and not included because the dataset's terms forbid redistribution. The audit labels are recorded by index in the script, and the sample is seeded, so it regenerates identically once you have dataset access.
 - **Nov 6:** `src/swarmwatch/evasion.py`, `scripts/evasion.py`, `logs/evasion.json` (+ `tests/test_evasion.py`): simulated evasions of the AI Village log (strip @-mentions, mask role words, clip length) and a white-box vocabulary-deletion adversary vs static and retrained content monitors. Reported in the report's Results and Appendix B (Tables B2, B3). Rewritten logs, not adapting agents.
 - **Nov 6:** `scripts/visibility.py`, `logs/visibility.json`: equal-budget comparison of random, time-block and agent-subset visibility on AI Village (Table B4 in the report). Deterministic (rerun identical).
+- **Nov 6:** `scripts/ci.py`, `logs/ci.json`: bootstrap 95% intervals for the headline numbers (Table 1); `tests/test_integration.py`: end-to-end smoke test on a synthetic fixture.
 Anything else added from Nov 6 onward will be listed here with commit hashes.
 
 ## Data (NOT included in this repo)
@@ -41,6 +42,7 @@ python scripts/observability.py > logs/observability.json      # Swarm Traces ob
 python scripts/role_recovery.py > logs/role_recovery.json      # role changes from chat self-identification (sprint-window)
 python scripts/evasion.py > logs/evasion.json                  # simulated evasions + white-box vocabulary adversary (sprint-window)
 python scripts/visibility.py > logs/visibility.json            # random vs targeted visibility at equal budget (sprint-window)
+python scripts/ci.py > logs/ci.json                            # bootstrap 95% CIs for headline numbers (sprint-window)
 ```
 Seeds are fixed in the scripts. Logged outputs from our runs are in `logs/`.
 

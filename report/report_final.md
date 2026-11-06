@@ -44,14 +44,14 @@ What did not work and what I changed. A first version of the Swarm Traces experi
 
 **Content versus structure.** Table 1 and Figure 1 show the comparison. Observation: a monitor that reads the messages finds power-role agents far better than any structural monitor. Observation: every monitor, content or structural, scores at or below chance on Phase-1 chat, as the placebo predicts.
 
-Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chance PR-AUC = 0.195). Holm-adjusted p-values are for the five single structural features.
+Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chance PR-AUC = 0.195). Holm-adjusted p-values are for the five single structural features. Brackets are 95% bootstrap intervals over agents (2,000 resamples); they do not include variation from cross-validation training.
 
 | Monitor | PR-AUC | ROC-AUC | Phase 1 PR-AUC |
 |---|---|---|---|
-| TF-IDF logistic regression (content) | 0.712 | 0.888 | 0.164 |
+| TF-IDF logistic regression (content) | 0.712 [0.55, 0.85] | 0.888 | 0.164 |
 | Governance keyword count (content; partly circular) | 0.597 | n/a | 0.211 |
-| Mean message length | 0.427 (p = 0.002) | 0.769 | 0.152 |
-| @-mentions received (in-degree) | 0.354 (p = 0.028) | 0.641 | 0.233 |
+| Mean message length | 0.427 [0.28, 0.64] (p = 0.002) | 0.769 | 0.152 |
+| @-mentions received (in-degree) | 0.354 [0.21, 0.52] (p = 0.028) | 0.641 | 0.233 |
 | XGBoost, all structural features | 0.354 | 0.654 | 0.227 |
 | PageRank | 0.310 (p = 0.119) | 0.621 | 0.257 |
 | Message count | 0.195 (not significant) | 0.465 | 0.223 |
@@ -81,7 +81,7 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 
 **Limitations.**
 
-- 133 agents and 26 positives give wide intervals. I used one village, one model and one run. There is no held-out village.
+- 133 agents and 26 positives give wide intervals: the content monitor's 95% interval is [0.55, 0.85], mean length [0.28, 0.64] and in-degree [0.21, 0.52]. Only the content monitor is clearly separated from the structural ones, which overlap each other, and the in-degree interval's lower end is barely above chance (0.195). I used one village, one model and one run. There is no held-out village.
 - Roles were assigned randomly, so I measure the effect of an assigned role, not emergent influence or collusion. If roles had been earned through behaviour, the interpretation would differ.
 - The label boundary is a judgement. The placebo is consistent but not conclusive (above).
 - I ran several comparisons. I report all baselines in both phases and apply a Holm correction only to the five single-feature tests in each phase.
@@ -105,7 +105,7 @@ The scale is small and the labels are assigned roles, so these results show what
 
 ## Prior Work Disclosure
 
-The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Four additions were made during the sprint window (6 November 2026): the observability-tier experiment on Swarm Traces (Table A2; `scripts/observability.py`, `logs/observability.json`), the role-recovery analysis on AI Village (the paragraph "Recovering the role reassignment from chat"; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json`), the evasion tests on AI Village (the paragraph "Evasion tests"; `src/swarmwatch/evasion.py`, `scripts/evasion.py`, `logs/evasion.json`), and the equal-budget visibility comparison on AI Village (Table B4; `scripts/visibility.py`, `logs/visibility.json`). All four reuse the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
+The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Four additions were made during the sprint window (6 November 2026): the observability-tier experiment on Swarm Traces (Table A2; `scripts/observability.py`, `logs/observability.json`), the role-recovery analysis on AI Village (the paragraph "Recovering the role reassignment from chat"; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json`), the evasion tests on AI Village (the paragraph "Evasion tests"; `src/swarmwatch/evasion.py`, `scripts/evasion.py`, `logs/evasion.json`), and the equal-budget visibility comparison on AI Village (Table B4; `scripts/visibility.py`, `logs/visibility.json`). Bootstrap confidence intervals for the headline numbers (`scripts/ci.py`, `logs/ci.json`) and an end-to-end integration test (`tests/test_integration.py`) were also added. All of these reuse the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
 
 ## Author Contributions
 
