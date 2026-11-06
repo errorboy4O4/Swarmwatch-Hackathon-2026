@@ -56,7 +56,7 @@ while i < len(lines):
             if not re.match(r"^\|[-| ]+\|$", lines[i]): rows.append([c.strip() for c in lines[i].strip("|").split("|")])
             i += 1
         data = [[Paragraph(inline(c), CELLB if r == 0 else CELL) for c in row] for r, row in enumerate(rows)]
-        ncol = len(rows[0]); W = 6.3 * inch; first = W * (0.46 if ncol == 4 else 0.52 if ncol == 3 else 0.5)
+        ncol = len(rows[0]); W = 6.3 * inch; first = W * (0.46 if ncol == 4 else 0.52 if ncol == 3 else 0.30 if ncol >= 6 else 0.5)
         cw = [first] + [(W - first) / (ncol - 1)] * (ncol - 1)
         t = Table(data, colWidths=cw, repeatRows=1)
         t.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#999999")), ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#eeeeee")),

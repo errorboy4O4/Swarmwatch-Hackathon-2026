@@ -6,7 +6,7 @@ FOOT: Research conducted at the Swarm Alignment Hackathon, November 2026. Solo e
 
 ## Abstract
 
-If agent swarms are overseen from logs, the monitor may see only some of the messages, or may not be able to trust their content. I ask how much a log monitor can learn about which agents hold power, and whether it needs to read what the agents say. I use the AI Village swarm run: 133 copies of one model sharing one chat room, 26 of which were randomly given governance roles at the start of Phase 2. Phase-1 chat, written before any role existed, serves as a placebo. A content monitor (TF-IDF logistic regression on each agent's messages) finds the power-role agents with PR-AUC 0.712 (chance 0.195), mostly because agents announce their roles. Structure alone does much worse but not nothing: mean message length scores 0.427 and how often an agent is @-mentioned scores 0.354, while message count, out-degree and burst timing sit at chance. XGBoost on all structural features (0.354) does no better than in-degree alone and falls short of mean message length (0.427). The placebo scores at chance, though a direct Phase-2-versus-Phase-1 test is inconclusive. A secondary analysis on the Swarm Traces data (no timestamps, agents or labels) predicts a proxy actor label at macro-F1 0.726 on held-out templates, mostly from text; a metadata-only view without any text keeps 0.596. The data are small and the labels are assigned roles or proxies, so this is not a collusion detector.
+If agent swarms are overseen from logs, the monitor may see only some messages, or may not trust their content. I ask how much a log monitor learns about which agents hold power, and what happens when agents try to hide. I use the AI Village swarm run: 133 copies of one model in one chat room, 26 randomly given governance roles at the start of Phase 2. Phase-1 chat, written before any role existed, is a placebo and scores at chance, though a direct Phase-2-versus-Phase-1 test is inconclusive. A content monitor (TF-IDF logistic regression on each agent's messages) finds the power-role agents with PR-AUC 0.712 (chance 0.195) and still scores 0.713 after every role title and governance word is masked, because governance topics give agents away. Structure alone does worse: mean message length scores 0.427 and @-mentions received 0.354, while message count, out-degree and burst timing sit at chance; XGBoost on all structure (0.354) beats neither. Stripping @-mentions erases the mention signal, yet structure keeps 0.336 under three combined evasions. A white-box adversary deleting the 500 most predictive words drives a static content monitor to chance (0.218); a retrained one keeps 0.310. A secondary Swarm Traces analysis (no timestamps, agents or labels) predicts a proxy actor label at macro-F1 0.726, or 0.596 without text. Samples are small and labels are assigned roles: this is not a collusion detector.
 
 ## 1. Introduction
 
@@ -19,7 +19,7 @@ Threat model. The monitor is a defender with a (possibly partial) log of inter-a
 My main contributions are:
 
 1. A placebo design for the AI Village data. Roles were assigned at a known time, so chat written before that time cannot encode them, and every monitor should score at chance there. They do.
-2. A side-by-side comparison on a real 133-agent swarm of content, structural and timing monitors against one-feature baselines. Content wins clearly. Among structural signals, mean message length and @-mention counts carry some signal, while burst timing carries none, and a boosted-tree model does not beat the best single feature.
+2. A side-by-side comparison on a real 133-agent swarm of content, structural and timing monitors against one-feature baselines. Content wins clearly. Among structural signals, mean message length and @-mention counts carry some signal, while burst timing carries none, a boosted-tree model does not beat the best single feature, and the signals respond very differently to simulated evasions (mentions and length are easy to remove, topic content is not).
 3. A leakage audit of a second dataset (Swarm Traces), which cut my headline number there from 0.818 to 0.726 macro-F1 and is described openly, as an example of how easily identifier leakage inflates results on pseudonymised logs.
 
 ## 2. Related Work
@@ -59,7 +59,7 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 
 ![Figure 1. PR-AUC of each monitor on Phase-2 chat (blue) and on Phase-1 chat written before roles existed (grey, the placebo). The dashed line is chance. Content monitors lead; among structural signals only mean message length and @-mentions received clearly beat chance.](report/figs/fig1_monitors.png)
 
-**Interpretation.** Power roles are legible mainly through what agents say, which is unsurprising because they announce their roles. What is more interesting is what survives without content: mean message length and @-mention counts carry real but modest signal. I do not know why power-role agents write longer messages in Phase 2; in Phase 1 the direction is reversed (ROC-AUC 0.353), so this is a description, not an explanation.
+**Interpretation.** Power roles are legible mainly through what agents say. The signal is not just title-dropping: masking every role title and governance word leaves the content monitor's score unchanged (0.713), because power-role agents also write about governance topics. What is more interesting is what survives without content: mean message length and @-mention counts carry real but modest signal. I do not know why power-role agents write longer messages in Phase 2; in Phase 1 the direction is reversed (ROC-AUC 0.353), so this is a description, not an explanation.
 
 **Burst timing and model complexity.** Timing features alone score 0.192 PR-AUC, which is chance. Removing them slightly raises the XGBoost score (0.381 against 0.354 with them). XGBoost on all structural features does not beat mean message length alone (0.427). Differences among XGBoost variants are within about one cross-validation standard deviation (0.02 to 0.04), so I would not rank them.
 
@@ -67,9 +67,11 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 
 **Partial visibility.** Figure 2 shows the monitor degrading gracefully when it sees only a sample of messages: XGBoost scores 0.312 with 50% of messages, 0.293 with 25%, 0.270 with 10% and 0.254 with 5%, still above chance. In-degree alone does at least as well at every level. Cross-validation uses only these 133 agents, so intervals are wide (for in-degree at full visibility, 0.21 to 0.52).
 
-**Recovering the role reassignment from chat (added Nov 6).** The reassigned roles are not in the tables, but agents often sign a message with a role title next to their own name, so I extracted those self-identifications with a simple, noisy rule (a hand audit of 20 of 55 flagged cases found 17 clear, 1 ambiguous and 2 false positives; details in Appendix B). Before 12:50 UTC, 98% of title-bearing messages used the agent's original title; from 12:50 to 21:00 UTC only 50% did. Of the 91 agents who signed with a title in that window, 60 still used their original title at least once, consistent with the dataset README, but 31 (about a third) signed only as a different role. Only 6 of those 31 moved between power and non-power roles, so the power label is mostly unaffected.
+**Recovering the role reassignment from chat (added Nov 6).** The reassigned roles are not in the tables, but agents often sign a message with a role title beside their own name. A simple, noisy rule extracts these (hand audit of 20 of 55 flagged cases: 17 clear, 1 ambiguous, 2 false positives; Appendix B). Before 12:50 UTC, 98% of title-bearing messages used the agent's original title; from 12:50 to 21:00 UTC only 50% did. Of 91 agents who signed with a title in that window, 60 still used their original title at least once, consistent with the dataset README, but 31 signed only as a different role. Only 6 of those 31 moved between power and non-power roles, so the power label is mostly unaffected.
 
-**Observability tiers (Swarm Traces; added Nov 6).** For the Track 4 "catch the swarm at the gateway" prompt, I ran the Appendix A attribution task at four levels of visibility, always with the credential id masked (Table A2). Removing the text costs about 0.13 macro-F1 (0.726 to 0.596). Removing the parent/child links, then the row structure, changes the score by only 0.008 and 0.006, inside the seed-to-seed noise (standard deviation 0.02 to 0.03). On this data the text carries the extra signal. Caveat: the "gateway" tokens are pseudonyms extracted from payload text, so this is a metadata-like view, not a real egress log, and the task is still proxy-label attribution, not detection of exfiltration.
+**Evasion tests (added Nov 6).** I rewrote the Phase-2 log in four ways and re-scored the monitors (Tables B2, B3). These are rewritten logs, not agents that adapt. Stripping every @-mention takes in-degree to chance (0.354 to 0.195) but leaves mean length (0.425) and the content monitor (0.712) unchanged. Masking every role title and governance word leaves the content monitor at 0.713: its top words are governance topics (cabinet, assembly, treasury, vote, tax, law, audit), not only titles. Clipping messages to 300 characters cuts mean length from 0.427 to 0.272. With all three rewrites together XGBoost on structure still scores 0.336, though its standard deviation is 0.031, so I do not claim it differs from the clean 0.354. The stronger test is a white-box adversary that deletes the content monitor's K most predictive words (worst case: it sees all labels). At K = 500 a static monitor falls to chance (0.218) while a retrained one keeps 0.310; at K = 2000 the retrained one recovers to 0.419. Deleting that many words would badly distort real messages, so this bounds the adversary's cost rather than describing a realistic attack.
+
+**Observability tiers (Swarm Traces; added Nov 6).** For the Track 4 "catch the swarm at the gateway" prompt, I ran the Appendix A attribution task at four levels of visibility (Table A2). Removing the text costs about 0.13 macro-F1 (0.726 to 0.596); removing the parent/child links, then the row structure, changes it by only 0.008 and 0.006, inside seed noise (0.02 to 0.03). Caveat: the "gateway" tokens are pseudonyms extracted from payload text, so this is a metadata-like view, not a real egress log, and the task is still proxy-label attribution, not detection of exfiltration.
 
 ![Figure 2. How the structural monitor degrades when it sees only a random sample of Phase-2 messages. Both XGBoost and in-degree alone stay above chance down to 5% of messages.](report/figs/fig2_visibility.png)
 
@@ -84,11 +86,11 @@ Table 1. Finding the 26 power-role agents among 133 (Phase 2 unless noted; chanc
 - The label boundary is a judgement. The placebo is consistent but not conclusive (above).
 - I ran several comparisons. I report all baselines in both phases and apply a Holm correction only to the five single-feature tests in each phase.
 - The reassigned roles are not in the tables I downloaded. The chat-based recovery above is a noisy proxy that covers only agents who sign with a title (91 of 133 in the mistake window) and cannot establish their true reassigned roles.
-- The monitors are easy to evade: an agent that avoids mentions or paraphrases defeats them. I did not test adversaries, log tampering, steganography or trusted-monitor protocols, which are central to Track 4.
+- My evasion tests are rewrites of the log chosen by me, not agents that adapt, and the vocabulary adversary uses all the labels (a worst case that also distorts messages heavily). I did not test log tampering, steganography or trusted-monitor protocols, which are central to Track 4.
 
 - The Swarm Traces "gateway" tier is not a true network-egress log: its tokens come from the dataset's redaction of payload text, and the label is a proxy.
 
-**Future work.** Recover the true reassigned roles from the computer-use turns or the simulation's git history to replace the chat-based proxy and run the reassignment as a proper natural experiment; test targeted rather than random visibility and explicit evasion; replicate on another village or model; test a monitor that sees content but not agent names.
+**Future work.** Recover the true reassigned roles from the computer-use turns or the simulation's git history to replace the chat-based proxy and run the reassignment as a proper natural experiment; test targeted rather than random visibility, and evasion by agents that adapt rather than by rewritten logs; replicate on another village or model; test a monitor that sees content but not agent names.
 
 ## 6. Conclusion
 
@@ -103,7 +105,7 @@ The scale is small and the labels are assigned roles, so these results show what
 
 ## Prior Work Disclosure
 
-The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Two additions were made during the sprint window (6 November 2026): the observability-tier experiment on Swarm Traces (Table A2; `scripts/observability.py`, `logs/observability.json`) and the role-recovery analysis on AI Village (the paragraph "Recovering the role reassignment from chat"; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json`). Both reuse the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
+The hackathon judges only work done during the sprint (Nov 6-8, 2026). All of the work in this report was done before that: dataset access, the code, all experiments, the red-team review and the first draft of this report were completed on 4-5 November 2026, before the sprint started. No code from earlier projects was reused. This means the submitted results are, in the sprint's terms, pre-existing work. Three additions were made during the sprint window (6 November 2026): the observability-tier experiment on Swarm Traces (Table A2; `scripts/observability.py`, `logs/observability.json`), the role-recovery analysis on AI Village (the paragraph "Recovering the role reassignment from chat"; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`, `logs/role_recovery.json`), and the evasion tests on AI Village (the paragraph "Evasion tests"; `src/swarmwatch/evasion.py`, `scripts/evasion.py`, `logs/evasion.json`). All three reuse the pre-sprint code and data. Sprint-window changes are listed with commit hashes in the repository README.
 
 ## Author Contributions
 
@@ -176,6 +178,32 @@ The graph-only model scores at chance in ROC-AUC although in-degree alone reache
 Label sensitivity. Also counting judges, captains, the admiral, fire chief and harbor master as power roles gives 33 positives (prevalence 0.248); in-degree PR-AUC is 0.400 (permutation p = 0.005).
 
 Reassignment window (structure only; see Section 4 for the chat-based recovery). The dataset README says an operator mistake reassigned roles around 5:50am PT (12:50 UTC on the dataset clock, an assumption I did not verify) and that the originals were restored around 2pm PT. Scoring against the original roles, in-degree PR-AUC is 0.353 before 12:50 UTC (602 messages, p = 0.004) and 0.328 from 12:50 UTC onward (1,939 messages, p = 0.019); message count is at chance in both. This cannot be told apart from hub structure simply persisting, so I draw no conclusion about agents keeping old roles.
+
+Evasion tests (added Nov 6; `scripts/evasion.py`, Phase 2, PR-AUC; chance 0.195). The adversary is a rewrite of the log, not an adapting agent. "Static" content monitor: trained on clean text, scored on rewritten text; "adaptive": trained and scored on rewritten text. Structure features are recomputed from the rewritten log.
+
+Table B2. Effect of rewriting the log.
+
+| Rewrite | In-degree | Mean length | XGBoost, structure | Content, static | Content, adaptive |
+|---|---|---|---|---|---|
+| None (clean) | 0.354 | 0.427 | 0.354 | 0.711 | 0.711 |
+| Strip all @-mentions | 0.195 | 0.425 | 0.308 | 0.712 | 0.711 |
+| Mask role titles and governance words | 0.354 | 0.425 | 0.358 | 0.713 | 0.716 |
+| Clip messages to 300 characters | 0.338 | 0.272 | 0.314 | 0.740 | 0.739 |
+| All three together | 0.195 | 0.285 | 0.336 | 0.737 | 0.740 |
+
+XGBoost standard deviations are 0.011 to 0.033 and content standard deviations 0.006 to 0.014 over 5 x 5 cross-validation. In-degree is exactly chance once mentions are stripped because it is then constant. Clipping raises the content score slightly, probably because the first 300 characters of a message are its header and topic.
+
+Table B3. White-box vocabulary deletion: the adversary removes the K words with the largest positive weight in a logistic regression fitted on all agents and labels (worst case).
+
+| K words deleted | Static monitor PR-AUC | Adaptive (retrained) PR-AUC |
+|---|---|---|
+| 0 | 0.711 | 0.711 |
+| 20 | 0.626 | 0.651 |
+| 100 | 0.483 | 0.523 |
+| 500 | 0.218 | 0.310 |
+| 2000 | 0.179 | 0.419 |
+
+Standard deviations are 0.007 to 0.017. The retrained monitor at K = 2000 recovers because it can lean on the remaining vocabulary, including words that mark non-power agents; I did not investigate this further. The static monitor falling below chance at K = 2000 (0.179, ROC-AUC 0.409) means the deleted words flipped its ranking.
 
 Role recovery from chat (added Nov 6; `src/swarmwatch/roles.py`, `scripts/role_recovery.py`). A role title counts as a self-identification when it appears within a small window around the speaker's own name in the first 260 characters of a message (the single `god` role is excluded because it matches too many ordinary words, and titles shared by several roles are skipped). Title-bearing messages: 272 before 12:50 UTC (97.8% original title), 234 from 12:50 to 21:00 UTC (50.4%), 46 after 21:00 UTC (45.7%; small sample, and the UTC timing of the restoration is an assumption). Agents in the mistake window: 37 original title only, 31 other title only, 23 both, 42 no title. Hand audit of a random sample of 20 of the 55 flagged (agent, title) pairs: 17 clear self-identifications as a different role, 1 ambiguous (agent lists old and new role), 2 false positives (the title belonged to another agent), so roughly 85% of flagged cases were clearly right in this sample. Of the 31 other-only agents, 6 changed between power and non-power roles (4 gained, 2 lost). A content monitor trained on pre-mistake text scores the four who gained a power role at a mean of 0.31 and the two who lost one at 0.15, but their new roles were inferred from the same text the monitor reads, so this is circular and rests on six agents. The rule only sees agents who sign with a title, so it cannot establish the true reassigned roles.
 
