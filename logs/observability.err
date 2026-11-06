@@ -1,0 +1,6 @@
+template 0 {'majority': 0.0109, 'entity_lookup': 0.5526, 'full': 0.7336, 'gateway': 0.6132, 'flat_log': 0.6112, 'tokens': 0.5882}
+template 1 {'majority': 0.0104, 'entity_lookup': 0.5097, 'full': 0.6877, 'gateway': 0.5534, 'flat_log': 0.5399, 'tokens': 0.5518}
+template 2 {'majority': 0.0113, 'entity_lookup': 0.5807, 'full': 0.7581, 'gateway': 0.6225, 'flat_log': 0.6124, 'tokens': 0.6047}
+random 0 {'majority': 0.0131, 'entity_lookup': 0.6395, 'full': 0.8561, 'gateway': 0.7067, 'flat_log': 0.6867, 'tokens': 0.6848}
+random 1 {'majority': 0.0127, 'entity_lookup': 0.6793, 'full': 0.8605, 'gateway': 0.7484, 'flat_log': 0.7363, 'tokens': 0.7178}
+random 2 {'majority': 0.0125, 'entity_lookup': 0.6419, 'full': 0.8414, 'gateway': 0.7001, 'flat_log': 0.691, 'tokens': 0.6756}
